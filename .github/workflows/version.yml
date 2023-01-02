@@ -10,6 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          cache: yarn
+      - run: yarn --frozen-lockfile
       - uses: changesets/action@v1
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
