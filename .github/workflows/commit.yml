@@ -14,7 +14,9 @@ jobs:
         with:
           cache: yarn
       - run: yarn --frozen-lockfile
-      - run: sh deploy.sh staging
+      - run: |
+        docker login docker.io --username ${{secrets.DOCKER_USERNAME}} --password ${{secrets.DOCKER_PASSWORD}}
+        sh deploy.sh staging
 
   version:
     runs-on: ubuntu-latest
@@ -28,5 +30,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
-          publish: sh deploy.sh production
+          publish: |
+            docker login docker.io --username ${{secrets.DOCKER_USERNAME}} --password ${{secrets.DOCKER_PASSWORD}}
+            sh deploy.sh production
           createGithubReleases: true
