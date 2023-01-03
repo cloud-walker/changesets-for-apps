@@ -1,6 +1,4 @@
 #!/bin/sh
-# set -e
-# set -x
 
 ENV=${1:?"ENV (1st param) is missing"}
 NAME=$(jq -r .name package.json)

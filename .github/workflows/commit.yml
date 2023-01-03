@@ -31,12 +31,15 @@ jobs:
           cache: yarn
       - run: yarn --frozen-lockfile
       - uses: changesets/action@v1
+        id: changesets
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
           DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
         with:
-          publish: |
-            docker login docker.io --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
-            sh deploy.sh production
           createGithubReleases: true
+      - name: deploy production
+        if: steps.changesets.outputs.hasChangesets == 'false'
+        run: |
+          docker login docker.io --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
+          sh deploy.sh production
