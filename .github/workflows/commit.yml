@@ -14,7 +14,7 @@ jobs:
         with:
           cache: yarn
       - run: yarn --frozen-lockfile
-      - run: docker build --tag "changesets-for-apps" .
+      - run: docker build --tag changesets-for-apps .
 
   version:
     runs-on: ubuntu-latest
@@ -28,5 +28,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
-          publish: 'docker build --tag "changesets-for-apps" .'
+          publish: docker build --tag changesets-for-apps .
           createGithubReleases: true
