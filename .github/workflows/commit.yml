@@ -1,4 +1,4 @@
-name: Version
+name: commit
 on:
   push:
     branches: [main]
@@ -6,6 +6,16 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 jobs:
+  staging:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          cache: yarn
+      - run: yarn --frozen-lockfile
+      - run: docker build --tag "changesets-for-apps" .
+
   version:
     runs-on: ubuntu-latest
     steps:
@@ -18,6 +28,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
-          publish:
-            docker build --tag "changesets-for-apps" .
+          publish: docker build --tag "changesets-for-apps" .
           createGithubReleases: true
