@@ -1,5 +1,11 @@
 # my-app
 
+## 0.1.2
+
+### Patch Changes
+
+- d7ea014: adding docker
+
 ## 0.1.1
 
 ### Patch Changes
