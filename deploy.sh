@@ -8,13 +8,13 @@ VERSION=$(jq -r .version package.json)
 HASH=$(git rev-parse --short HEAD)
 
 if [ "$ENV" = "staging" ]; then
-  TAG=cloudwalker/changesets-for-apps:$VERSION-$HASH
+  TAG=lucabarone/changesets-for-apps:$VERSION-$HASH
   docker build --tag "$TAG" .
   docker push "$TAG"
 fi;
 
 if [ "$ENV" = "production" ]; then
-  TAG=cloudwalker/changesets-for-apps:$VERSION
+  TAG=lucabarone/changesets-for-apps:$VERSION
   docker build --tag "$TAG" .
   docker push "$TAG"
 fi;
