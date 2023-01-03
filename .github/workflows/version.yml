@@ -18,5 +18,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
-          publish: sh main.sh
+          publish:
+            docker build --tag "changesets-for-apps" .
           createGithubReleases: true
