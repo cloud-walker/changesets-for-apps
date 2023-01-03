@@ -9,12 +9,22 @@ HASH=$(git rev-parse --short HEAD)
 
 if [ "$ENV" = "staging" ]; then
   TAG=lucabarone/changesets-for-apps:$VERSION-$HASH
-  docker build --tag "$TAG" .
-  docker push "$TAG"
+  if docker manifest inspect $TAG > /dev/null ; echo $? then
+    echo "image $TAG already exists in the registry, skipping."
+  else
+    docker build --tag "$TAG" .
+    docker push "$TAG"
+  fi;
 fi;
 
 if [ "$ENV" = "production" ]; then
   TAG=lucabarone/changesets-for-apps:$VERSION
+  if docker manifest inspect $TAG > /dev/null ; echo $? then
+    echo "image $TAG already exists in the registry, skipping."
+  else
+    docker build --tag "$TAG" .
+    docker push "$TAG"
+  fi;
   docker build --tag "$TAG" .
   docker push "$TAG"
 fi;
