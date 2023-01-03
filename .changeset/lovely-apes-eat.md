@@ -1,5 +1,0 @@
----
-"my-app": patch
----
-
-stuff
