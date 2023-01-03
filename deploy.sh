@@ -7,7 +7,7 @@ HASH=$(git rev-parse --short HEAD)
 
 image_exists()
 {
-  return $(docker image inspect $1 > /dev/null ; echo $?)
+  return $(docker manifest inspect $1 > /dev/null ; echo $?)
 }
 
 if [ "$ENV" = "staging" ]; then
