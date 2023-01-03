@@ -16,7 +16,7 @@ if [ "$ENV" = "staging" ]; then
   IMAGE=lucabarone/changesets-for-apps:$VERSION-$HASH
   echo "IMAGE: $IMAGE"
   
-  if image_exists $IMAGE; then
+  if image_exists "$IMAGE"; then
     echo "image $IMAGE already exists in the registry, skipping."
   else
     echo "image $IMAGE not found in the registry, pushing..."
@@ -28,7 +28,7 @@ fi;
 if [ "$ENV" = "production" ]; then
   IMAGE=lucabarone/changesets-for-apps:$VERSION
 
-  if image_exists $IMAGE; then
+  if image_exists "$IMAGE"; then
     echo "image $IMAGE already exists in the registry, skipping."
   else
     echo "image $IMAGE not found in the registry, pushing..."
