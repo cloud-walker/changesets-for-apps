@@ -13,7 +13,7 @@ image_exists()
 docker login docker.io --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
 
 if [ "$ENV" = "staging" ]; then
-  IMAGE=lucabarone/changesets-for-apps:$VERSION-$HASH
+  IMAGE=$DOCKER_USERNAME/changesets-for-apps:$VERSION-$HASH
   echo "IMAGE: $IMAGE"
   
   if image_exists "$IMAGE"; then
@@ -26,7 +26,7 @@ if [ "$ENV" = "staging" ]; then
 fi;
 
 if [ "$ENV" = "production" ]; then
-  IMAGE=lucabarone/changesets-for-apps:$VERSION
+  IMAGE=$DOCKER_USERNAME/changesets-for-apps:$VERSION
 
   if image_exists "$IMAGE"; then
     echo "image $IMAGE already exists in the registry, skipping."
