@@ -33,8 +33,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
-          publish: changeset publish
-          createGithubReleases: true
+          publish: yarn release
       - name: deploy production
         if: steps.changesets.outputs.hasChangesets == 'false'
         env:
