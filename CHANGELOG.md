@@ -1,5 +1,11 @@
 # my-app
 
+## 1.0.0
+
+### Major Changes
+
+- 5fb6490: ✨ First working version
+
 ## 0.1.3
 
 ### Patch Changes
