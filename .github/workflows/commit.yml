@@ -18,7 +18,7 @@ jobs:
         env:
           DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
           DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
-        run: yarn publish staging
+        run: sh deploy.sh staging
 
   version:
     runs-on: ubuntu-latest
@@ -33,11 +33,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
-          publish: changesets publish
+          publish: changeset publish
           createGithubReleases: true
       - name: deploy production
         if: steps.changesets.outputs.hasChangesets == 'false'
         env:
           DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
           DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
-        run: yarn publish production
+        run: sh deploy.sh production
