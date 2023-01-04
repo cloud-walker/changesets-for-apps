@@ -10,29 +10,25 @@ image_exists()
   return $(docker manifest inspect $1 > /dev/null ; echo $?)
 }
 
+image_deploy()
+{
+  if image_exists "$1"; then
+    echo "image $IMAGE already exists in the registry, skipping."
+  else
+    echo "image $IMAGE not found in the registry, pushing..."
+    docker build --tag "$1" .
+    docker push "$1"
+  fi
+}
+
 docker login docker.io --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
 
 if [ "$ENV" = "staging" ]; then
   IMAGE=$DOCKER_USERNAME/$NAME:$VERSION-$HASH
-  echo "IMAGE: $IMAGE"
-  
-  if image_exists "$IMAGE"; then
-    echo "image $IMAGE already exists in the registry, skipping."
-  else
-    echo "image $IMAGE not found in the registry, pushing..."
-    docker build --tag "$IMAGE" .
-    docker push "$IMAGE"
-  fi;
-fi;
+  image_deploy $IMAGE
+fi
 
 if [ "$ENV" = "production" ]; then
   IMAGE=$DOCKER_USERNAME/$NAME:$VERSION
-
-  if image_exists "$IMAGE"; then
-    echo "image $IMAGE already exists in the registry, skipping."
-  else
-    echo "image $IMAGE not found in the registry, pushing..."
-    docker build --tag "$IMAGE" .
-    docker push "$IMAGE"
-  fi;
-fi;
+  image_deploy $IMAGE
+fi
