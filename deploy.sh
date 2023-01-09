@@ -7,12 +7,18 @@ HASH=$(git rev-parse --short HEAD)
 
 image_exists()
 {
-  return $(docker manifest inspect $1 > /dev/null ; echo $?)
+  docker manifest inspect $1 > /dev/null 2>&1
+
+  if [ $? -ne 0 ]; then
+    echo false
+  else
+    echo true
+  fi
 }
 
 image_deploy()
 {
-  if image_exists "$1"; then
+  if [ $(image_exists $1) = true ]; then
     echo "image $IMAGE already exists in the registry, skipping."
   else
     echo "image $IMAGE not found in the registry, pushing..."
@@ -21,14 +27,12 @@ image_deploy()
   fi
 }
 
-docker login docker.io --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
-
 if [ "$ENV" = "staging" ]; then
-  IMAGE=$DOCKER_USERNAME/$NAME:$VERSION-$HASH
+  IMAGE=lucabarone/$NAME:$VERSION-$HASH
   image_deploy $IMAGE
 fi
 
 if [ "$ENV" = "production" ]; then
-  IMAGE=$DOCKER_USERNAME/$NAME:$VERSION
+  IMAGE=lucabarone/$NAME:$VERSION
   image_deploy $IMAGE
 fi

@@ -18,9 +18,10 @@ jobs:
         env:
           DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
           DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
-        run: sh deploy.sh staging
-
-  production:
+        run: |
+          docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
+          sh deploy.sh staging
+  version:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -36,9 +37,3 @@ jobs:
           title: 🏷️ Release changes
           commit: 🏷️ Release changes
           publish: yarn run tag # We need that script in order to add git tag and github release
-      - name: deploy production
-        if: steps.changesets.outputs.hasChangesets == 'false'
-        env:
-          DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
-          DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
-        run: sh deploy.sh production
