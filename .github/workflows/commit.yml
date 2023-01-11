@@ -37,3 +37,10 @@ jobs:
           title: 🏷️ Release changes
           commit: 🏷️ Release changes
           publish: yarn run tag # We need that script in order to add git tag and github release
+      - name: deploy production
+        env:
+          DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
+          DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+        run: |
+          echo "$DOCKER_PASSWORD" | docker login --username $DOCKER_USERNAME --password-stdin
+          sh deploy.sh production
