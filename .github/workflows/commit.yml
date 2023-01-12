@@ -15,12 +15,7 @@ jobs:
           cache: yarn
       - run: yarn --frozen-lockfile
       - name: deploy staging
-        env:
-          DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
-          DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
-        run: |
-          docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
-          sh deploy.sh staging
+        run: echo "deploying to staging"
   version:
     runs-on: ubuntu-latest
     steps:
@@ -38,9 +33,5 @@ jobs:
           commit: 🏷️ Release changes
           publish: yarn run tag # We need that script in order to add git tag and github release
       - name: deploy production
-        env:
-          DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
-          DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
-        run: |
-          echo "$DOCKER_PASSWORD" | docker login --username $DOCKER_USERNAME --password-stdin
-          sh deploy.sh production
+        if: steps.changesets.outputs.published == 'true'
+        run: echo "deploying to production" # Slap here your own deploy logic
