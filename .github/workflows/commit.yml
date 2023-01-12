@@ -15,7 +15,7 @@ jobs:
           cache: yarn
       - run: yarn --frozen-lockfile
       - name: deploy staging
-        run: echo "deploying to staging"
+        run: echo "deploying to staging..."
   version:
     runs-on: ubuntu-latest
     steps:
@@ -34,4 +34,4 @@ jobs:
           publish: yarn run tag # We need that script in order to add git tag and github release
       - name: deploy production
         if: steps.changesets.outputs.published == 'true'
-        run: echo "deploying to production" # Slap here your own deploy logic
+        run: echo "deploying to production..." # Slap here your own deploy logic
