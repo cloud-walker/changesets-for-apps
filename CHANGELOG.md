@@ -1,4 +1,4 @@
-# my-app
+# changesets-for-apps
 
 ## 1.0.0
 
